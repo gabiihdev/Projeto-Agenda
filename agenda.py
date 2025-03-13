@@ -114,3 +114,56 @@ def adicionar_contato():
 
     agenda[nome] = contato
     print('\n>> CONTATO ADICIONADO COM SUCESSO!!')
+
+
+def consultar_contatos():
+    if not agenda:
+        print('>> AGENDA VAZIA.')
+        return
+        
+    print(f"{'Nome'.ljust(22)}{'Data de nascimento'.rjust(18)}{'Endereço'.rjust(22)}{'Telefones'.rjust(35)}{'E-mails'.rjust(28)}")
+    print('-' * 140)
+
+    for nome, contato in agenda.items():
+        endereco_formatado = f"{contato['Endereço']['Rua']}, {contato['Endereço']['Número']} - {contato['Endereço']['Bairro']}, {contato['Estado']}"
+
+        telefones = contato['Telefones']
+        emails = contato['Emails']
+        max_linhas = max(len(telefones), len(emails), 1)
+
+        print(
+            f"{nome.ljust(25)}{contato['Data_nascimento'].ljust(20)}{endereco_formatado.ljust(40)}", end="")
+
+        for i in range(max_linhas):
+            telefone = telefones[i] if i < len(telefones) else ""
+            email = emails[i] if i < len(emails) else ""
+
+            if i == 0:
+                print(f"{telefone.ljust(25)}{email}")
+            else:
+                print(f"{' '.ljust(85)}{telefone.ljust(25)}{email}")
+
+        print('-' * 140)
+
+
+def menu():
+    while True:
+        print('_' * 140)
+        print('\n======== MENU ========')
+        print('[1] - Adicionar contato')
+        print('[2] - Consultar contato')
+        print('[0] - Encerrar programa\n')
+        
+        opcao = input('ESCOLHA UMA OPÇÃO: ')
+        print('_' * 140)
+        
+        if opcao == '1':
+            adicionar_contato()
+        elif opcao == '2':
+            consultar_contatos()
+        elif opcao == '0':
+            break
+        else:
+            print('>> OPÇÃO INVÁLIDA')
+            
+menu()
