@@ -1,5 +1,51 @@
 import re
-agenda = {}
+agenda = {
+    'João Silva': {
+        'Nome': 'João Silva',
+        'Data_nascimento': '15-04-1985',
+        'Endereço': {
+            'Rua': 'Rua das Flores',
+            'Número': '123',
+            'Complemento': 'Apto 101',
+            'Bairro': 'Centro',
+            'Município': 'São Paulo',
+            'Estado': 'SP',
+            'CEP': '01010-000'
+        },
+        'Telefones': ['(11) 99999-8888', '(11) 98765-4321'],
+        'Emails': ['joao.silva@gmail.com', 'joao.silva@yahoo.com']
+    },
+    'Maria Oliveira': {
+        'Nome': 'Maria Oliveira',
+        'Data_nascimento': '25-12-1990',
+        'Endereço': {
+            'Rua': 'Avenida Brasil',
+            'Número': '456',
+            'Complemento': 'Casa',
+            'Bairro': 'Jardim Paulista',
+            'Município': 'São Paulo',
+            'Estado': 'SP',
+            'CEP': '01311-000'
+        },
+        'Telefones': ['(11) 98888-7777'],
+        'Emails': ['maria.oliveira@gmail.com']
+    },
+    'Carlos Pereira': {
+        'Nome': 'Carlos Pereira',
+        'Data_nascimento': '10-06-1978',
+        'Endereço': {
+            'Rua': 'Rua do Sol',
+            'Número': '789',
+            'Complemento': 'Bloco B',
+            'Bairro': 'Vila Nova',
+            'Município': 'Rio de Janeiro',
+            'Estado': 'RJ',
+            'CEP': '20000-000'
+        },
+        'Telefones': ['(21) 91234-5678'],
+        'Emails': ['carlos.pereira@hotmail.com']
+    }
+}
 
 def adicionar_nome():
     print('\nCONTATO')
@@ -121,18 +167,17 @@ def consultar_contatos():
         print('>> AGENDA VAZIA.')
         return
         
-    print(f"{'Nome'.ljust(22)}{'Data de nascimento'.rjust(18)}{'Endereço'.rjust(22)}{'Telefones'.rjust(35)}{'E-mails'.rjust(28)}")
-    print('-' * 140)
+    print(f"{'Nome'.ljust(22)}{'Data de nascimento'.rjust(18)}{'Endereço'.rjust(25)}{'Telefones'.rjust(44)}{'E-mails'.rjust(26)}")
+    print('-' * 150)
 
     for nome, contato in agenda.items():
-        endereco_formatado = f"{contato['Endereço']['Rua']}, {contato['Endereço']['Número']} - {contato['Endereço']['Bairro']}, {contato['Estado']}"
+        endereco_formatado = f"{contato['Endereço']['Rua']}, {contato['Endereço']['Número']} - {contato['Endereço']['Bairro']}, {contato['Endereço']['Estado']}"
 
         telefones = contato['Telefones']
         emails = contato['Emails']
         max_linhas = max(len(telefones), len(emails), 1)
 
-        print(
-            f"{nome.ljust(25)}{contato['Data_nascimento'].ljust(20)}{endereco_formatado.ljust(40)}", end="")
+        print(f"{nome.ljust(25)}{contato['Data_nascimento'].ljust(22)}{endereco_formatado.ljust(50)}", end="")
 
         for i in range(max_linhas):
             telefone = telefones[i] if i < len(telefones) else ""
@@ -141,21 +186,21 @@ def consultar_contatos():
             if i == 0:
                 print(f"{telefone.ljust(25)}{email}")
             else:
-                print(f"{' '.ljust(85)}{telefone.ljust(25)}{email}")
+                print(f"{' '.ljust(97)}{telefone.ljust(25)}{email}")
 
-        print('-' * 140)
+        print('-' * 150)
 
 
 def menu():
     while True:
-        print('_' * 140)
+        print('_' * 150)
         print('\n======== MENU ========')
         print('[1] - Adicionar contato')
         print('[2] - Consultar contato')
         print('[0] - Encerrar programa\n')
         
         opcao = input('ESCOLHA UMA OPÇÃO: ')
-        print('_' * 140)
+        print('_' * 150)
         
         if opcao == '1':
             adicionar_contato()
