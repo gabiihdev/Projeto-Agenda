@@ -252,6 +252,22 @@ def editar_contato():
             print('\n>> OPÇÃO INVÁLIDA.')
 
 
+def excluir_contato():
+    if not agenda:
+        print('AGENDA VAZIA.')
+        return
+
+    nome = input('Digite o nome do contato que deseja excluir: ').lower()
+
+    for chave in agenda.keys():
+        if chave.lower() == nome:
+            agenda.pop(chave)
+            print(f'\n>> Contato "{nome}" excluído com sucesso!!')
+            return
+
+    print('>> CONTATO NÃO ENCONTRADO.')
+
+
 def menu():
     while True:
         print('_' * 150)
@@ -259,6 +275,7 @@ def menu():
         print('[1] - Adicionar contato')
         print('[2] - Consultar contato')
         print('[3] - Editar contato')
+        print('[4] - Excluir contato')
         print('[0] - Encerrar programa\n')
         
         opcao = input('ESCOLHA UMA OPÇÃO: ')
@@ -270,6 +287,8 @@ def menu():
             consultar_contatos()
         elif opcao == '3':
             editar_contato()
+        elif opcao == '4':
+            excluir_contato()
         elif opcao == '0':
             break
         else:
