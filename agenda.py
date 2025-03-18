@@ -47,9 +47,10 @@ agenda = {
     }
 }
 
+
 def adicionar_nome():
     print('\nCONTATO')
-    print('-' * 30)
+    print('-' * 60)
     while True:
         nome = input('Digite o nome do contato: ')
         if nome.lower() in (chave.lower() for chave in agenda.keys()):
@@ -71,13 +72,13 @@ def adicionar_data_nascimento():
 
 def adicionar_endereco():
     print('\nENDEREÇO')
-    print('-' * 30)
+    print('-' * 60)
     rua = input('Digite o nome da rua: ')
     numero = input('Digite o número: ')
     complemento = input('Digite o complemento: ')
     bairro = input('Digite o bairro: ')
     municipio = input('Digite o município: ')
-    estado = input('Digite o estado: ')
+    estado = input('Digite o estado (ex: RJ, SP, MG): ')
     
     while True:
         cep = input('Digite o CEP (XXXXX-XXX): ')
@@ -100,7 +101,7 @@ def adicionar_endereco():
 
 def adicionar_telefones():
     print('\nTELEFONES')
-    print('-' * 30)
+    print('-' * 60)
     telefones = []
     while True:
         telefone = input('Digite o telefone (ou 0 para parar): ')
@@ -108,8 +109,8 @@ def adicionar_telefones():
         if telefone == '0':
             break
         
-        elif not re.match(r'^\d{10,11}$',telefone): 
-            print('>> Telefone inválido. Digite no formato correto (10 ou 11 dígitos).\n')
+        elif not re.match(r'^\(\d{2}\) \d{4,5}-\d{4}$', telefone): 
+            print('>> Telefone inválido. Digite no formato correto "(XX) XXXXX-XXXX".\n')
         
         elif any(telefone in contato['Telefones'] for contato in agenda.values()):
             print(f'>> Já existe um com o número "{telefone}" na agenda. Tente novamente.\n')
@@ -122,7 +123,7 @@ def adicionar_telefones():
 
 def adicionar_emails(): 
     print('\nE-MAILS')
-    print('-' * 30)
+    print('-' * 60)
     emails = []
     while True:
         email = input('Digite o e-mail (ou 0 para parar): ').strip()
@@ -131,7 +132,7 @@ def adicionar_emails():
             break
     
         elif not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):
-            print('>> E-mail inválido. Digite no formato correto.\n')
+            print('>> E-mail inválido. Digite no formato correto (exemplo: gabiih.dev@gmail.com).\n')
             continue
     
         elif any(email in contato['Emails'] for contato in agenda.values()):
@@ -191,12 +192,73 @@ def consultar_contatos():
         print('-' * 150)
 
 
+def editar_contato():
+    if not agenda:
+        print('>> AGENDA VAZIA.')
+        return
+    
+    nome = input('Digite o nome do contato que deseja alterar: ').lower()
+    
+    for chave in agenda.keys():
+        if chave.lower() == nome:
+            contato = agenda[chave]
+            break
+    else:
+        print('>> CONTATO NÃO ENCONTRADO.')
+        return
+    
+    while True:
+        print('_' * 60)
+        print('\n[1] - Nome')
+        print('[2] - Data de nascimento')
+        print('[3] - Endereço')
+        print('[4] - Telefones')
+        print('[5] - E-mails')
+        print('[0] - Encerrar edições\n')
+
+        opcao = input('Qual campo deseja editar?  ')
+        print('_' * 60)
+        
+        if opcao == '1':
+            novo_nome = adicionar_nome().title()
+            agenda[novo_nome] = agenda.pop(chave)
+            print(f'\n>> Nome alterado com sucesso para {novo_nome}.')
+        
+        elif opcao == '2':
+            nova_data = adicionar_data_nascimento()
+            contato['Data_nascimento'] = nova_data
+            print(f'\n>> Data de nascimento alterada com sucesso para {nova_data}.')
+            
+        elif opcao == '3':
+            novo_endereco = adicionar_endereco()
+            contato['Endereço'] = novo_endereco
+            print(f"\n>> Endereço alterado com sucesso para:  {novo_endereco['Rua']}, {novo_endereco['Número']} - {novo_endereco['Complemento']}, {novo_endereco['Bairro']} - {novo_endereco['Município']} ({novo_endereco['Estado']}), CEP: {novo_endereco['CEP']}.")
+            
+        elif opcao == '4':
+            novos_telefones = adicionar_telefones()
+            contato['Telefones'] = novos_telefones
+            print(f'\n>> Telefones alterados com sucesso para {novos_telefones}.')
+            
+        elif opcao == '5':
+            novos_emails = adicionar_emails()
+            contato['Emails'] = novos_emails
+            print(f'\n>> E-mails alterados com sucesso para {novos_emails}.')
+            
+        elif opcao == '0':
+            print('>> Edições encerradas.')
+            break
+            
+        else:
+            print('\n>> OPÇÃO INVÁLIDA.')
+
+
 def menu():
     while True:
         print('_' * 150)
         print('\n======== MENU ========')
         print('[1] - Adicionar contato')
         print('[2] - Consultar contato')
+        print('[3] - Editar contato')
         print('[0] - Encerrar programa\n')
         
         opcao = input('ESCOLHA UMA OPÇÃO: ')
@@ -206,6 +268,8 @@ def menu():
             adicionar_contato()
         elif opcao == '2':
             consultar_contatos()
+        elif opcao == '3':
+            editar_contato()
         elif opcao == '0':
             break
         else:
